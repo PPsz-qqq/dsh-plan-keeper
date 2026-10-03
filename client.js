@@ -90,8 +90,8 @@ window.__ModuleLoader__.load({
 .pk-toggle{display:flex;align-items:center;gap:8px;min-width:0;flex:1;text-align:left;border:0;background:none;color:inherit;cursor:pointer;padding:4px;font:inherit}
 .pk-title{font-weight:600;flex:none}
 .pk-summary{min-width:0;flex:1;color:var(--dsw-alias-label-secondary);font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.pk-resume{border:0;border-radius:7px;padding:6px 11px;background:var(--dsw-alias-brand-primary);color:white;font:inherit;cursor:pointer;flex:none}
-.pk-resume:disabled{opacity:.45;cursor:not-allowed}
+.pk-resume{border:0;border-radius:7px;padding:6px 11px;background:var(--dsw-alias-button-info-fill,#4176e6);color:#fff;font:inherit;cursor:pointer;flex:none}
+.pk-resume:disabled{opacity:.4;cursor:default}
 .pk-dismiss{flex:none;display:grid;place-items:center;width:28px;height:28px;border:0;border-radius:7px;background:none;color:var(--dsw-alias-label-secondary);font:inherit;font-size:16px;line-height:1;cursor:pointer}
 .pk-dismiss:hover{background:var(--dsw-alias-bg-layer-2);color:var(--dsw-alias-label-primary)}
 .pk-toggle:focus-visible,.pk-resume:focus-visible,.pk-dismiss:focus-visible{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:2px}
@@ -254,7 +254,8 @@ window.__ModuleLoader__.load({
         state.running ? t('summary.running') : paused ? t('summary.paused') : t('summary.done'),
         ...(!expanded && current ? [current.content] : []),
       ].join(' · ');
-      const showResume = remaining && state.subagent === null;
+      // While a run is in progress the button could never be used, so it is not shown at all.
+      const showResume = paused && state.subagent === null;
       const showDismiss = !!plan && !state.running && typeof props.onDismiss === 'function';
 
       async function resume() {

@@ -428,14 +428,21 @@ test('unknown stop reasons use the generic notice', () => {
   assert.equal(textOf(find(tree, 'pk-notice')), '计划尚未完成，可以继续执行');
 });
 
-test('running plan shows no notice, no dismiss, and a disabled resume with a reason', () => {
+test('running plan shows no notice, no dismiss and no unusable resume button', () => {
   const tree = render({ state: ready({ running: true }) });
   assert.equal(find(tree, 'pk-notice').length, 0);
   assert.equal(find(tree, 'pk-dismiss').length, 0);
-  const button = find(tree, 'pk-resume')[0];
-  assert.equal(button.props.disabled, true);
-  assert.equal(button.props.title, '请等待当前执行结束');
+  assert.equal(find(tree, 'pk-resume').length, 0);
   assert.match(textOf(find(tree, 'pk-summary')), /执行中/);
+});
+
+test('resume button label stays readable in light and dark themes', () => {
+  // brand-primary is near-white in the dark theme, so it must never sit behind the white label.
+  const source = readFileSync(new URL('../client.js', import.meta.url), 'utf8');
+  const rule = source.match(/\.pk-resume\{[^}]*\}/)[0];
+  assert.match(rule, /background:var\(--dsw-alias-button-info-fill/);
+  assert.match(rule, /color:#fff/);
+  assert.doesNotMatch(rule, /brand-primary/);
 });
 
 test('pending submission explains why resume is disabled', () => {
