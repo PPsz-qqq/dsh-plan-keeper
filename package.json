@@ -1,6 +1,6 @@
 {
   "name": "dsh-plan-keeper",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "保留跨轮次的 AI 待办计划，并在暂停后提供继续执行按钮。",
   "type": "module",
   "main": "./index.js",
@@ -12,6 +12,7 @@
   "files": [
     "index.js",
     "projection.js",
+    "schema.js",
     "client.js",
     "cordis.patch.yml",
     "README.md"
@@ -48,13 +49,14 @@
       "platform": "web",
       "inject": [
         "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-conversation",
         "@deepseek-ai/dsh-client-ui-session"
       ]
     }
   },
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
-    "check": "node --check index.js && node --check projection.js && node --check client.js"
+    "test": "node --test",
+    "check": "node --check index.js && node --check projection.js && node --check schema.js && node --check client.js"
   }
 }
