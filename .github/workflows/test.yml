@@ -1,0 +1,21 @@
+name: Plugin tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: node --check index.js && node --check projection.js && node --check client.js
+      - name: Run regression tests
+        run: node --test tests/*.test.mjs
